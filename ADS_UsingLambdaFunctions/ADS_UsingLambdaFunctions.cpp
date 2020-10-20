@@ -10,6 +10,7 @@ void demoLambdaFunctionAsParameterToAFunction();
 
 int main()
 {
+
 	cout << endl << "****************** demoLambdaFunctions ******************" << endl;
 	demoLambdaFunctions();
 
