@@ -7,7 +7,8 @@
 
 using namespace std;
 void demoLambdaFunctions();
-void demoLambdaFunctionAsParameterToAFunction();
+void demoLambdaFunctionAsParameterToAFunction1();
+void demoLambdaFunctionAsParameterToAFunction2();
 
 class Vehicle {
 private:
@@ -25,46 +26,34 @@ public:
 
 Vehicle* getBestForCustomer(Vehicle* pA, Vehicle* pB) {
 
-	bool bMatchA = std::regex_match(pA->getModel(), std::regex("s[0-9]"));
+	bool bModelMatchA = std::regex_match(pA->getModel(), std::regex("s[0-9]"));
+	bool bModelMatchB = std::regex_match(pB->getModel(), std::regex("s[0-9]"));
 
-	if (bMatchA && std::regex_match(pB->getModel(), std::regex("s[0-9]"))){
+	if (bModelMatchA && bModelMatchB){
 		return pA->getPrice() < pB->getPrice() ? pA : pB;
 	}
-	else if (!bMatchA && !std::regex_match(pB->getModel(), std::regex("s[0-9]"))) {
+	else if (!bModelMatchA && !bModelMatchB) {
 		return nullptr;
 	}
-	//else {
-		//mix ("s1", "x5")
-		return pA; //to do...
-	//}
+	else {
+		if (bModelMatchA)
+			return pA;
+		else
+			return pB;
+	}
 }
 
 int main()
 {
-	vector<Vehicle*> vehicleVec;
-	vehicleVec.emplace_back(new Vehicle("tesla", "x1", 10000));
-	vehicleVec.emplace_back(new Vehicle("tesla", "x3", 65000));
-	vehicleVec.emplace_back(new Vehicle("tesla", "x5", 80000));
-	auto print = [](Vehicle* v) { 
-		if(v != nullptr)
-			cout << *v << endl; 
-	};
-	//print(vehicleVec.at(0));
-
-	Vehicle *pBest = getBestForCustomer(vehicleVec.at(0), (vehicleVec.at(1)));
-	print(pBest);
-
-
-
-
-
-
 
 	//cout << endl << "****************** demoLambdaFunctions ******************" << endl;
 	//demoLambdaFunctions();
 
-	//cout << endl << "****************** demoLambdaFunctionAsParameterToAFunction ******************" << endl;
-	//demoLambdaFunctionAsParameterToAFunction();
+	//cout << endl << "****************** demoLambdaFunctionAsParameterToAFunction1 ******************" << endl;
+	//demoLambdaFunctionAsParameterToAFunction1();
+
+	//cout << endl << "****************** demoLambdaFunctionAsParameterToAFunction2 ******************" << endl;
+	//demoLambdaFunctionAsParameterToAFunction2();
 }
 
 int add(int x, int y) {
@@ -73,9 +62,6 @@ int add(int x, int y) {
 int max(int x, int y) {
 	return x > y ? x : y; //ternary operator (3 operands)
 }
-
-const int maxRange = 100;
-
 bool isInRange(int x) {
 	return x > 0 && x < 100 ? true : false;
 }
@@ -115,7 +101,7 @@ void demoLambdaFunctions()
 
 }
 
-void demoLambdaFunctionAsParameterToAFunction()
+void demoLambdaFunctionAsParameterToAFunction1()
 {
 	list<int> nums = { 17, 3, 8, 21, 89, -23, 56 };
 	int multipleOf = 3;
@@ -127,4 +113,21 @@ void demoLambdaFunctionAsParameterToAFunction()
 	int number = findFirstBy(nums, func);
 	cout << "The first number to satisfy the lambda function in the list is " << number << endl;
 
+}
+
+void demoLambdaFunctionAsParameterToAFunction2() {
+	vector<Vehicle*> vehicleVec;
+	vehicleVec.emplace_back(new Vehicle("tesla", "x1", 10000));
+	vehicleVec.emplace_back(new Vehicle("tesla", "v3", 65000));
+	vehicleVec.emplace_back(new Vehicle("tesla", "x5", 80000));
+
+	auto print = [](Vehicle* v) {
+		if (v != nullptr)
+			cout << *v << endl;
+		else
+			cout << "No valid object to print!" << endl;
+	};
+
+	Vehicle* pBest = getBestForCustomer(vehicleVec.at(0), (vehicleVec.at(1)));
+	print(pBest);
 }
